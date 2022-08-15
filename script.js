@@ -2,22 +2,31 @@
 const choices = ["rock", "paper", "scissors"]
 
 function game() {
-    for(i=0; i<4;i++) {
-        round()
+    if (getPlayerChoice() === undefined) {
+        return ("Fine, don't play then.")
+    } else {
+        for(i=0; i<4;i++) {
+            round()
+        }
     }
+
 }
 
 function getComputerChoice() {
     return choices[Math.floor(Math.random()*3)];
 }
 
-function getPlayerChoice() {
+/*function getPlayerChoice() {
     let x = window.prompt("Write Rock, Paper, or Scissors")
-    return x.toLowerCase()
-}
-
+    if(x === null){
+        return
+    } else {
+        return x.toLowerCase()
+    }
+}*/
+let playerChoice = ""
 function round() {
-    const playerChoice = getPlayerChoice()
+
     const computerChoice = getComputerChoice()
     const winner = checkWinner(playerChoice, computerChoice)
     console.log(playerChoice)
@@ -38,8 +47,70 @@ function checkWinner(playerChoice, computerChoice) {
     }
 }
 
-console.log(game())
+let playerChoices = []
+let computerChoices = []
+let roundWins = []
 
+function fullGame() {
+    for (i = 0; i < 5; i++) {
+        computerChoices.push(getComputerChoice())
+    }
+
+    for (i = 0; i < 5; i++) {
+        roundWins.push(checkWinner(playerChoices[i], computerChoices[i]))
+    }
+
+    console.log(playerChoices)
+    console.log(computerChoices)
+    console.log(roundWins)
+
+    playerChoices.length = 0
+    computerChoices.length = 0
+    roundWins.length = 0
+}
+
+
+
+const gameContainer = document.querySelector(".game")
+
+const playerChoicesDisplay = document.createElement('div')
+playerChoicesDisplay.classList.add("playerChoicesDisplay")
+
+gameContainer.appendChild(playerChoicesDisplay)
+
+const computerChoicesDisplay = document.createElement('div')
+computerChoicesDisplay.classList.add("computerChoicesDisplay")
+
+gameContainer.appendChild(computerChoicesDisplay)
+
+const scissorsButton = document.querySelector("#scissors")
+
+scissorsButton.addEventListener('click', e => {
+    playerChoices.push("scissors")
+    if (playerChoices.length === 5){
+        fullGame()
+    }
+})
+
+const paperButton = document.querySelector("#paper")
+
+paperButton.addEventListener('click', e => {
+    playerChoices.push("paper")
+    if (playerChoices.length === 5){
+        fullGame()
+    }
+})
+
+const rockButton = document.querySelector("#rock")
+
+rockButton.addEventListener('click', e => {
+    playerChoices.push("rock")
+    if (playerChoices.length === 5){
+        fullGame()
+    }
+    playerChoicesDisplay.textContent = playerChoices.toString()
+    computerChoicesDisplay.textContent = computerChoices.toString()
+})
 
 
 /* 
